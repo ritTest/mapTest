@@ -1,2 +1,0 @@
-alarm('rrrr');
-alarm('rrrrrr');
