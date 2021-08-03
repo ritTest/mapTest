@@ -1,19 +1,19 @@
-import { Component, OnInit} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-    selector: 'about',
-    template: `<h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit consequatur delectus maiores alias eveniet, incidunt dolorem voluptatibus animi molestias dolor illum explicabo doloremque quas inventore cumque distinctio minima nostrum esse?</h3>`
+  selector: "app-root",
+  templateUrl: "./about.component.html",
+  styleUrls: ["./style-map.component.scss"]
 })
 export class AboutComponent implements OnInit {
-
-
-  constructor() {
+  constructor(){
 
   }
 
-  ngOnInit(): void {
+  ngOnInit(){
 
   }
+  }
 
-}
 
