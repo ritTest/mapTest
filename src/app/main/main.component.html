@@ -1,9 +1,23 @@
 <div #mapContainer id="map"></div>
 
 <div class="block1">
-  <div class="block">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi exercitationem commodi at voluptatum officia maiores molestias sed, accusamus id qui minima sit quaerat, officiis assumenda et eaque facere pariatur libero.
-  Corrupti, repudiandae quia eligendi sit exercitationem eaque labore illo aliquam placeat maxime unde laudantium delectus excepturi dolorum in, cumque, error magni officia tempore voluptatum cum ea et dicta sed? Adipisci?
-  Rerum excepturi labore rem mollitia sequi ipsam blanditiis, libero, nesciunt est minima et voluptates eaque qui, molestias totam fugiat architecto exercitationem. Quae, quo. Eius tempore aut ab exercitationem ipsam repellendus.
-  Error hic quos corporis voluptatibus ex debitis repellendus quo voluptas doloremque, vero officia minima reprehenderit quod, veritatis voluptate mollitia ipsam amet culpa. Nulla temporibus minima dignissimos ut ipsam quisquam amet?</div>
+  <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+
+    <mat-form-field class="inpt" appearance="fill">
+      <mat-label>Широта</mat-label>
+      <input matInput id="name" type="text" formControlName="userLAT">
+    </mat-form-field>
+
+
+    <mat-form-field class="inpt" appearance="fill">
+      <mat-label>Долгота</mat-label>
+      <input matInput id="name" type="text" formControlName="userLNG">
+    </mat-form-field>
+
+
+
+    <button mat-raised-button color="primary" class="button" type="submit">Ввод</button>
+
+  </form>
 </div>
 

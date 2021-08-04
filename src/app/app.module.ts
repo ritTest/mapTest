@@ -7,7 +7,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { MainComponent } from './main/main.component';
 import { MaterialAllModule } from './material/material.module';
-import { AgmCoreModule } from '@agm/core';
+import { FormsModule }   from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,7 +23,8 @@ import { AgmCoreModule } from '@agm/core';
     BrowserAnimationsModule,
     RouterModule,
     MaterialAllModule,
-
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
