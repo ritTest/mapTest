@@ -1,22 +1,22 @@
 <div #mapContainer id="map"></div>
 
 <div class="block1">
-  <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="checkoutForm" >
 
     <mat-form-field class="inpt" appearance="fill">
       <mat-label>Широта</mat-label>
-      <input matInput id="name" type="text" formControlName="userLAT">
+      <input matInput id="name" type="number" formControlName="userLAT">
     </mat-form-field>
 
 
     <mat-form-field class="inpt" appearance="fill">
       <mat-label>Долгота</mat-label>
-      <input matInput id="name" type="text" formControlName="userLNG">
+      <input matInput id="name" type="number" formControlName="userLNG">
     </mat-form-field>
 
 
 
-    <button mat-raised-button color="primary" class="button" type="submit">Ввод</button>
+    <button mat-raised-button color="primary" class="button" type="submit">красивая кнопка</button>
 
   </form>
 </div>

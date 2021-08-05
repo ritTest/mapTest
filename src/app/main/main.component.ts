@@ -1,32 +1,32 @@
 
 
-import { Component, ViewChild, ElementRef, AfterViewInit } from "@angular/core";
+import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy  } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 @Component({
   selector: "app-root",
   templateUrl: "./main.component.html",
   styleUrls: ["./main.component.scss"]
 })
-export class MainComponent implements AfterViewInit {
+export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
   title = 'angpj';
   @ViewChild("mapContainer", { static: false }) gmap: ElementRef;
 
-  map: google.maps.Map ;
+  private map: google.maps.Map ;
 
-  myLatlng = new google.maps.LatLng(51.5,-0.11);
+  private myLatlng = new google.maps.LatLng(51.5,-0.11);
 
-  mapOptions = {
+  private mapOptions = {
     zoom: 8,
     center: this.myLatlng
   };
 
-  marker = new google.maps.Marker({
+  private marker = new google.maps.Marker({
     position: this.myLatlng,
     icon: 'http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png',
     title: 'Лондон'
   });
 
-  transitLayer = new google.maps.TransitLayer();
+  private transitLayer = new google.maps.TransitLayer();
 
 
   ngAfterViewInit(): void {
@@ -49,19 +49,38 @@ export class MainComponent implements AfterViewInit {
     this.transitLayer.setMap(this.map);
   }
 
-  checkoutForm : FormGroup = new FormGroup({
-    userLAT: new FormControl('51.5'),
-    userLNG: new FormControl('-0.11')
-  })
+  private trek: any[] = []
 
-  onSubmit(): void{
-    this.checkoutForm.valueChanges.subscribe(changes =>
-      this.map.setCenter(new google.maps.LatLng(changes['userLAT'], changes['userLNG']))
-      );
+  checkoutForm : FormGroup
 
+  ngOnInit(): void {
+    this.checkoutForm = new FormGroup({
+      userLAT: new FormControl(51.5),
+      userLNG: new FormControl(-0.11)
+    })
+
+
+    const onSubmit = (): void => {
+      this.checkoutForm.valueChanges.subscribe(changes =>
+        (this.map.setCenter(new google.maps.LatLng(changes['userLAT'], changes['userLNG'])),
+        this.trek.push([changes['userLAT'], changes['userLNG']])
+//,        console.log(this.trek)
+        )
+        );
+    }
+
+    onSubmit();
   }
 
-
-
+  ngOnDestroy(): void {
+    let a  = localStorage.length / 2
+    for (let i = 0; i <= this.trek.length - 1; i++){
+      localStorage.setItem(`LAN${a + i}`, this.trek[i][0])
+//      console.log(`LAN${a / 2 + i}`, this.trek[i][0])
+      localStorage.setItem(`LNG${a + i}`, this.trek[i][1])
+//      console.log(`LNG${a / 2 + i}`, this.trek[i][1])
+    }
+    console.log(localStorage)
   }
 
+  }
