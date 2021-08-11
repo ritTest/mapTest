@@ -10,19 +10,21 @@ import { FormControl, FormGroup } from "@angular/forms";
 export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
   title = 'angpj';
   @ViewChild("mapContainer", { static: false }) gmap: ElementRef;
-  @ViewChild('checkbox', { static: false }) checkbox: any = false;
   private map: google.maps.Map ;
 
   private myLatlng = new google.maps.LatLng(51.5,-0.11);
 
   private mapOptions = {
     zoom: 8,
-    center: this.myLatlng
+    center: this.myLatlng,
+    mapId: '795bd4d715f5b94e'
   };
+
 
   private marker = new google.maps.Marker({
     position: this.myLatlng,
-    icon: 'http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png',
+    icon: './assets/marker.png',
+
     title: 'маркер'
   });
 
@@ -42,19 +44,15 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   reproduce(): void{
-      for (let i = 0; i < this.coord.length; i++) {
-        if (this.coord[i] != undefined){
-          ((index) => {
-              setTimeout(() => {
-                this.marker.setPosition(new google.maps.LatLng(this.coord[index][0], this.coord[index][1], true));
-                console.log(this.change_pos)
-                if (this.change_pos){
-                  this.map.setCenter(new google.maps.LatLng(Number(this.marker.getPosition()?.lat()),Number(this.marker.getPosition()?.lng())))
-                }
-              }, i * 1000);
-          })(i);
-    }
-  }
+    let coord_trek = this.coord.concat(this.trek)
+    coord_trek.forEach((item, i) => {
+      setTimeout(() => {
+        this.marker.setPosition(new google.maps.LatLng(item[0], item[1], true));
+        if (this.change_pos){
+          this.map.setCenter(new google.maps.LatLng(item[0], item[1]))
+        }
+      }, i * 1000);
+    })
     }
 
   change(): void{
@@ -82,6 +80,9 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
 
+  del(): void{
+    localStorage.clear()
+  }
 
   ngOnInit(): void {
     this.checkoutForm = new FormGroup({
@@ -102,26 +103,20 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
         this.map.setCenter(new google.maps.LatLng(changes['userLAT'], changes['userLNG'])),
         not_121(),
         this.trek.push([changes['userLAT'], changes['userLNG']])
-// ,        console.log(this.trek)
         )
         );
     }
 
     onSubmit();
-
-
-    let ls_l = localStorage.length
-    for(let i=0; i < ls_l; i++){
-      let parse_string = JSON.parse(String(localStorage.getItem(String(i))));
-      this.coord = this.coord.concat(parse_string)
-    }
-    console.log(this.coord)
+    let parse_string = JSON.parse(String(localStorage.getItem('items')));
+    this.coord = this.coord.concat(parse_string)
   }
 
   ngOnDestroy(): void {
-    localStorage.setItem(`${localStorage.length}`, JSON.stringify(this.trek))
-    //  localStorage.clear()
-    console.log(localStorage)
+    let parse_stor = JSON.parse(String(localStorage.getItem('items'))) || [];
+    parse_stor = parse_stor.concat(this.trek)
+    localStorage.setItem('items', JSON.stringify(parse_stor))
+    // localStorage.clear()
   }
 
   }
