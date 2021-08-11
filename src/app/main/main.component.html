@@ -13,10 +13,9 @@
       <mat-label>Долгота</mat-label>
       <input matInput id="name" type="number" formControlName="userLNG">
     </mat-form-field>
+    <mat-checkbox class="check" color="primary" id='checkbox' (change)="change()">Следить</mat-checkbox>
 
-
-
-    <button mat-raised-button color="primary" class="button" type="submit">красивая кнопка</button>
+    <button mat-raised-button color="primary" class="button" type="submit" id="reproduce" (click)="reproduce()">воспроизвести</button>
 
   </form>
 </div>
