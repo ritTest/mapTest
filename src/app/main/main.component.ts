@@ -1,7 +1,8 @@
 
 
-import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy  } from "@angular/core";
+import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
+import { GeocodeService } from './geocode.service';
 @Component({
   selector: "app-root",
   templateUrl: "./main.component.html",
@@ -9,10 +10,13 @@ import { FormControl, FormGroup } from "@angular/forms";
 })
 export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
   title = 'angpj';
+  constructor(
+    private geocodeS: GeocodeService
+  ) { }
   @ViewChild("mapContainer", { static: false }) gmap: ElementRef;
-  private map: google.maps.Map ;
+  private map: google.maps.Map;
 
-  private myLatlng = new google.maps.LatLng(51.5,-0.11);
+  private myLatlng = new google.maps.LatLng(51.5, -0.11);
 
   private mapOptions = {
     zoom: 8,
@@ -36,29 +40,33 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
 
   private change_pos: boolean = false;
 
-  checkoutForm : FormGroup
+  private info: any
+
+  checkoutForm: FormGroup
+
 
 
   ngAfterViewInit(): void {
     this.mapInit();
   }
 
-  reproduce(): void{
+  reproduce(): void {
     let coord_trek = this.coord.concat(this.trek)
     coord_trek.forEach((item, i) => {
       setTimeout(() => {
         this.marker.setPosition(new google.maps.LatLng(item[0], item[1], true));
-        if (this.change_pos){
-          this.map.setCenter(new google.maps.LatLng(item[0], item[1]))
+        if (this.change_pos) {
+          this.map.setCenter(new google.maps.LatLng(item[0], item[1], true))
         }
       }, i * 1000);
     })
-    }
+  }
 
-  change(): void{
-    if(this.change_pos == true){
-      this.change_pos = false}
-    else{
+  change(): void {
+    if (this.change_pos == true) {
+      this.change_pos = false
+    }
+    else {
       this.change_pos = true
     }
   }
@@ -69,7 +77,7 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
 
     this.marker.addListener('click', () => {
       let info = new google.maps.InfoWindow({
-        content: ' <h3>просто маркер</h3><p>описание места</p>'
+        content: this.info
       })
       info.open(this.map, this.marker)
     });
@@ -80,10 +88,24 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
 
-  del(): void{
+
+  del(): void {
     localStorage.clear()
     this.trek = []
   }
+
+
+
+  get_coord(): void {
+    let lat = this.marker.getPosition()!.lat()
+    let lng = this.marker.getPosition()!.lng()
+    this.geocodeS.getGeocode([[lat],[lng]]).subscribe(
+      res => (
+      document.getElementById('coords')!.innerText = res.results[0].formatted,
+      this.info = res.results[0].formatted
+    ))
+  }
+
 
   ngOnInit(): void {
     this.checkoutForm = new FormGroup({
@@ -92,32 +114,36 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
     })
 
 
-    const not_121 = (): void =>{
-      if (this.trek.length == 120){
+    const not_121 = (): void => {
+      if (this.trek.length == 120) {
         this.trek.shift()
       }
     }
 
     const onSubmit = (): void => {
       this.checkoutForm.valueChanges.subscribe(changes =>
-        (
+      (
         this.map.setCenter(new google.maps.LatLng(changes['userLAT'], changes['userLNG'])),
         not_121(),
         this.trek.push([changes['userLAT'], changes['userLNG']])
-        )
-        );
+      )
+      );
     }
 
     onSubmit();
     let parse_string = JSON.parse(String(localStorage.getItem('items')));
     this.coord = this.coord.concat(parse_string)
+
+
   }
 
   ngOnDestroy(): void {
     let parse_stor = JSON.parse(String(localStorage.getItem('items'))) || [];
     parse_stor = parse_stor.concat(this.trek)
     localStorage.setItem('items', JSON.stringify(parse_stor))
-    // localStorage.clear()
   }
 
-  }
+
+
+}
+

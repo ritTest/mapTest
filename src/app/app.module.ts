@@ -10,8 +10,8 @@ import { MaterialAllModule } from './material/material.module';
 import { FormsModule }   from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
-
-
+import { GeocodeService } from './main/geocode.service';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,9 +24,10 @@ import { FormBuilder } from '@angular/forms';
     RouterModule,
     MaterialAllModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [GeocodeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
