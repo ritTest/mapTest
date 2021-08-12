@@ -82,6 +82,7 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
 
   del(): void{
     localStorage.clear()
+    this.trek = []
   }
 
   ngOnInit(): void {
