@@ -100,10 +100,11 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
     let lat = this.marker.getPosition()!.lat()
     let lng = this.marker.getPosition()!.lng()
     this.geocodeS.getGeocode([[lat],[lng]]).subscribe(
-      res => (
-      document.getElementById('coords')!.innerText = res.results[0].formatted,
-      this.info = res.results[0].formatted
-    ))
+      res => {
+        document.getElementById('coords')!.innerText = res.results[0].formatted;
+        this.info = res.results[0].formatted
+      }
+    )
   }
 
 
