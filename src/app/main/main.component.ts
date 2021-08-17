@@ -32,9 +32,21 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
     title: 'маркер'
   });
 
+  private icon = {
+    url: './assets/circle.png',
+    size: new google.maps.Size(16, 16),
+    origin: new google.maps.Point(0, 0),
+    anchor: new google.maps.Point(7, 12),
+  }
+
+  private trek_marker = new google.maps.Marker({
+    position: this.myLatlng,
+    icon: this.icon,
+  });
+
   private transitLayer = new google.maps.TransitLayer();
 
-  private trek: any[] = [];
+  private trek: any[] = [[51.5, -0.11]];
 
   private coord: any[] = [];
 
@@ -53,12 +65,13 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
   reproduce(): void {
     let coord_trek = this.coord.concat(this.trek)
     coord_trek.forEach((item, i) => {
+      if (item != null){
       setTimeout(() => {
         this.marker.setPosition(new google.maps.LatLng(item[0], item[1], true));
         if (this.change_pos) {
           this.map.setCenter(new google.maps.LatLng(item[0], item[1], true))
         }
-      }, i * 1000);
+      }, i * 1000);}
     })
   }
 
@@ -82,8 +95,8 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
       info.open(this.map, this.marker)
     });
 
+    this.trek_marker.setMap(this.map);
     this.marker.setMap(this.map);
-
     this.transitLayer.setMap(this.map);
   }
 
@@ -92,9 +105,16 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
   del(): void {
     localStorage.clear()
     this.trek = []
+    this.trek = [[51.5, -0.11]]
   }
 
-
+  save(): void{
+    if (this.trek.length == 120) {
+      this.trek.shift()
+    }
+    this.trek.push([this.checkoutForm.get('userLAT')!.value, this.checkoutForm.get('userLNG')!.value])
+    this.marker.setPosition(new google.maps.LatLng(this.checkoutForm.get('userLAT')!.value, this.checkoutForm.get('userLNG')!.value))
+  }
 
   get_coord(): void {
     let lat = this.marker.getPosition()!.lat()
@@ -114,19 +134,11 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
       userLNG: new FormControl(-0.11)
     })
 
-
-    const not_121 = (): void => {
-      if (this.trek.length == 120) {
-        this.trek.shift()
-      }
-    }
-
     const onSubmit = (): void => {
       this.checkoutForm.valueChanges.subscribe(changes =>
       (
         this.map.setCenter(new google.maps.LatLng(changes['userLAT'], changes['userLNG'])),
-        not_121(),
-        this.trek.push([changes['userLAT'], changes['userLNG']])
+        this.trek_marker.setPosition(new google.maps.LatLng(changes['userLAT'], changes['userLNG']))
       )
       );
     }
@@ -135,7 +147,6 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
     let parse_string = JSON.parse(String(localStorage.getItem('items')));
     this.coord = this.coord.concat(parse_string)
 
-
   }
 
   ngOnDestroy(): void {
@@ -143,8 +154,5 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
     parse_stor = parse_stor.concat(this.trek)
     localStorage.setItem('items', JSON.stringify(parse_stor))
   }
-
-
-
 }
 
