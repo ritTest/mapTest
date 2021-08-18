@@ -15,6 +15,7 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
     private geocodeS: GeocodeService
   ) { }
   @ViewChild("mapContainer", { static: false }) gmap: ElementRef;
+  @ViewChild("tableMy", { static: false }) inform: ElementRef | undefined;
   private map: google.maps.Map;
 
   private myLatlng = new google.maps.LatLng(51.5, -0.11);
@@ -56,16 +57,10 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
   info: IGeoLoc | null = null;
 
   private info_marker = new google.maps.InfoWindow({
-    content: this.info?.results[0].formatted
-  })
-
-  private info_trek = new google.maps.InfoWindow({
     content: ''
   })
 
   checkoutForm: FormGroup
-
-
 
   ngAfterViewInit(): void {
     this.mapInit();
@@ -98,29 +93,19 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
     this.map = new google.maps.Map(this.gmap.nativeElement, this.mapOptions);
 
     this.marker.addListener('click', () => {
-      this.info_marker.close();
-      const msg = this.info?.results[0].formatted ?? '';
-      this.info_marker.setContent(msg);
-      this.info_marker.open(this.map, this.marker);
+      this.marker_info()
     });
-
-    this.trek_marker.addListener('click', () => {
-      this.info_trek.close()
-      this.geocodeS.getGeocode([[this.trek_marker.getPosition()!.lat()], [this.trek_marker.getPosition()!.lng()]]).subscribe(
-        res => (
-          this.info_trek.setContent(res.results[0].formatted),
-          this.info_trek.open(this.map, this.trek_marker)
-        )
-      )
-
-    });
-
     this.trek_marker.setMap(this.map);
     this.marker.setMap(this.map);
     this.transitLayer.setMap(this.map);
   }
 
-
+  marker_info(): void{
+    this.info_marker.close();
+    this.info_marker.setContent(this.inform?.nativeElement);
+    this.inform!.nativeElement.style.display = ''
+    this.info_marker.open(this.map, this.marker);
+  }
 
   del(): void {
     localStorage.clear()
@@ -134,15 +119,17 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
     }
     this.trek.push([this.checkoutForm.get('userLAT')!.value, this.checkoutForm.get('userLNG')!.value])
     this.marker.setPosition(new google.maps.LatLng(this.checkoutForm.get('userLAT')!.value, this.checkoutForm.get('userLNG')!.value))
+    this.process_coord()
+    this.info_marker.open(this.map, this.marker);
   }
 
-  get_coord(): void {
+  process_coord(): void {
     let lat = this.marker.getPosition()!.lat()
     let lng = this.marker.getPosition()!.lng()
-    this.geocodeS.getGeocode([[lat], [lng]]).subscribe(
+    this.geocodeS.getGeocode([lat, lng]).subscribe(
       res => {
-        // document.getElementById('coords')!.innerText = res.results[0].formatted;
         this.info = res;
+        this.marker_info()
       }
     )
   }

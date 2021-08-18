@@ -12,7 +12,7 @@ export class GeocodeService {
   ) { }
 
 
-  getGeocode(latLong: number[][]): Observable<IGeoLoc> {
+  getGeocode(latLong: number[]): Observable<IGeoLoc> {
     return timer(100).pipe(
       mergeMap(_ => this.http.get(`https://api.opencagedata.com/geocode/v1/json?q=${latLong[0]}+${latLong[1]}&key=0efacb983fa94d74b497e78cebabd3f5`) as Observable<IGeoLoc>)
     )
@@ -60,7 +60,8 @@ export interface IGeoLoc {
       postcode: string,
       road: string,
       state: string,
-      suburb: string
+      suburb: string,
+      village: string
     };
     confidence: number;
     formatted: string;
