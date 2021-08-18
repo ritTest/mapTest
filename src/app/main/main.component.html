@@ -20,7 +20,7 @@
     <button mat-raised-button color="primary" class="button" type="submit" id="del" (click)="del()">очистить хранилище</button>
     <button mat-raised-button color="primary" class="button" type="submit" id="get_coords" (click)="get_coord()">получить координаты</button>
 
-    <div class="coords" id="coords"></div>
+    <div class="coords" id="coords" *ngIf="info">{{info.results[0]?.formatted}}</div>
   </form>
 </div>
 

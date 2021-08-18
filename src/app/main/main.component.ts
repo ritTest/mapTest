@@ -3,7 +3,7 @@
 import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
 
-import { GeocodeService } from './geocode.service';
+import { GeocodeService, IGeoLoc } from './geocode.service';
 @Component({
   selector: "app-root",
   templateUrl: "./main.component.html",
@@ -53,10 +53,10 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
 
   private change_pos: boolean = false
 
-  private info: any = ''
+  info: IGeoLoc | null = null;
 
   private info_marker = new google.maps.InfoWindow({
-    content: this.info
+    content: this.info?.results[0].formatted
   })
 
   private info_trek = new google.maps.InfoWindow({
@@ -98,9 +98,10 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
     this.map = new google.maps.Map(this.gmap.nativeElement, this.mapOptions);
 
     this.marker.addListener('click', () => {
-      this.info_marker.close()
-      this.info_marker.setContent(this.info)
-      this.info_marker.open(this.map, this.marker)
+      this.info_marker.close();
+      const msg = this.info?.results[0].formatted ?? '';
+      this.info_marker.setContent(msg);
+      this.info_marker.open(this.map, this.marker);
     });
 
     this.trek_marker.addListener('click', () => {
@@ -140,8 +141,8 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
     let lng = this.marker.getPosition()!.lng()
     this.geocodeS.getGeocode([[lat], [lng]]).subscribe(
       res => {
-        document.getElementById('coords')!.innerText = res.results[0].formatted;
-        this.info = res.results[0].formatted
+        // document.getElementById('coords')!.innerText = res.results[0].formatted;
+        this.info = res;
       }
     )
   }
