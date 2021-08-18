@@ -2,6 +2,7 @@
 
 import { Component, ViewChild, ElementRef, AfterViewInit, OnInit, OnDestroy } from "@angular/core";
 import { FormControl, FormGroup } from "@angular/forms";
+
 import { GeocodeService } from './geocode.service';
 @Component({
   selector: "app-root",
@@ -50,9 +51,17 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
 
   private coord: any[] = [];
 
-  private change_pos: boolean = false;
+  private change_pos: boolean = false
 
-  private info: any
+  private info: any = ''
+
+  private info_marker = new google.maps.InfoWindow({
+    content: this.info
+  })
+
+  private info_trek = new google.maps.InfoWindow({
+    content: ''
+  })
 
   checkoutForm: FormGroup
 
@@ -65,13 +74,14 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
   reproduce(): void {
     let coord_trek = this.coord.concat(this.trek)
     coord_trek.forEach((item, i) => {
-      if (item != null){
-      setTimeout(() => {
-        this.marker.setPosition(new google.maps.LatLng(item[0], item[1], true));
-        if (this.change_pos) {
-          this.map.setCenter(new google.maps.LatLng(item[0], item[1], true))
-        }
-      }, i * 1000);}
+      if (item != null) {
+        setTimeout(() => {
+          this.marker.setPosition(new google.maps.LatLng(item[0], item[1], true));
+          if (this.change_pos) {
+            this.map.setCenter(new google.maps.LatLng(item[0], item[1], true))
+          }
+        }, i * 1000);
+      }
     })
   }
 
@@ -85,14 +95,23 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   mapInit(): void {
-    this.map = new google.maps.Map(this.gmap.nativeElement, this.mapOptions
-    );
+    this.map = new google.maps.Map(this.gmap.nativeElement, this.mapOptions);
 
     this.marker.addListener('click', () => {
-      let info = new google.maps.InfoWindow({
-        content: this.info
-      })
-      info.open(this.map, this.marker)
+      this.info_marker.close()
+      this.info_marker.setContent(this.info)
+      this.info_marker.open(this.map, this.marker)
+    });
+
+    this.trek_marker.addListener('click', () => {
+      this.info_trek.close()
+      this.geocodeS.getGeocode([[this.trek_marker.getPosition()!.lat()], [this.trek_marker.getPosition()!.lng()]]).subscribe(
+        res => (
+          this.info_trek.setContent(res.results[0].formatted),
+          this.info_trek.open(this.map, this.trek_marker)
+        )
+      )
+
     });
 
     this.trek_marker.setMap(this.map);
@@ -108,7 +127,7 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
     this.trek = [[51.5, -0.11]]
   }
 
-  save(): void{
+  save(): void {
     if (this.trek.length == 120) {
       this.trek.shift()
     }
@@ -119,7 +138,7 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
   get_coord(): void {
     let lat = this.marker.getPosition()!.lat()
     let lng = this.marker.getPosition()!.lng()
-    this.geocodeS.getGeocode([[lat],[lng]]).subscribe(
+    this.geocodeS.getGeocode([[lat], [lng]]).subscribe(
       res => {
         document.getElementById('coords')!.innerText = res.results[0].formatted;
         this.info = res.results[0].formatted
@@ -135,13 +154,18 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
     })
 
     const onSubmit = (): void => {
+
       this.checkoutForm.valueChanges.subscribe(changes =>
       (
+
         this.map.setCenter(new google.maps.LatLng(changes['userLAT'], changes['userLNG'])),
         this.trek_marker.setPosition(new google.maps.LatLng(changes['userLAT'], changes['userLNG']))
+
       )
       );
     }
+
+
 
     onSubmit();
     let parse_string = JSON.parse(String(localStorage.getItem('items')));
