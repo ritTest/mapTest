@@ -41,11 +41,6 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
     anchor: new google.maps.Point(7, 12),
   }
 
-  private trek_marker = new google.maps.Marker({
-    position: this.myLatlng,
-    icon: this.icon,
-  });
-
   private transitLayer = new google.maps.TransitLayer();
 
   private trek: any[] = [[51.5, -0.11]];
@@ -60,11 +55,12 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
     content: ''
   })
 
-  checkoutForm: FormGroup
+  private trek_marker = new google.maps.Marker({
+    position: this.myLatlng,
+    icon: this.icon,
+  });
 
-  ngAfterViewInit(): void {
-    this.mapInit();
-  }
+  checkoutForm: FormGroup
 
   reproduce(): void {
     let coord_trek = this.coord.concat(this.trek)
@@ -134,6 +130,23 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
     )
   }
 
+  map_drag(): void{
+    this.map.addListener("dragend", () => {
+      this.trek_marker.setPosition(this.map.getCenter() as google.maps.LatLng)
+      });
+    this.map.addListener("drag", () => {
+      this.trek_marker.setPosition(this.map.getCenter() as google.maps.LatLng)
+    });
+    this.map.addListener("dragstart", () => {
+    this.trek_marker.setPosition(this.map.getCenter() as google.maps.LatLng)
+    });
+    this.map.addListener("center_changed", () => {
+    this.trek_marker.setPosition(this.map.getCenter() as google.maps.LatLng)
+    this.checkoutForm.controls['userLAT'].patchValue(Number(this.map.getCenter()?.lat()))
+    this.checkoutForm.controls['userLNG'].patchValue(Number(this.map.getCenter()?.lng()))
+    });
+
+  }
 
   ngOnInit(): void {
     this.checkoutForm = new FormGroup({
@@ -145,20 +158,21 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
 
       this.checkoutForm.valueChanges.subscribe(changes =>
       (
-
         this.map.setCenter(new google.maps.LatLng(changes['userLAT'], changes['userLNG'])),
         this.trek_marker.setPosition(new google.maps.LatLng(changes['userLAT'], changes['userLNG']))
-
       )
       );
     }
-
-
 
     onSubmit();
     let parse_string = JSON.parse(String(localStorage.getItem('items')));
     this.coord = this.coord.concat(parse_string)
 
+  }
+
+  ngAfterViewInit(): void {
+    this.mapInit();
+    this.map_drag()
   }
 
   ngOnDestroy(): void {
