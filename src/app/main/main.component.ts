@@ -16,6 +16,7 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
   ) { }
   @ViewChild("mapContainer", { static: false }) gmap: ElementRef;
   @ViewChild("tableMy", { static: false }) inform: ElementRef | undefined;
+  @ViewChild("menu", { static: false }) menu: ElementRef | undefined;
   private map: google.maps.Map;
 
   private myLatlng = new google.maps.LatLng(51.5, -0.11);
@@ -55,6 +56,8 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
     content: ''
   })
 
+  private menu_click: any
+
   private trek_marker = new google.maps.Marker({
     position: this.myLatlng,
     icon: this.icon,
@@ -68,6 +71,7 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
       if (item != null) {
         setTimeout(() => {
           this.marker.setPosition(new google.maps.LatLng(item[0], item[1], true));
+          this.process_coord()
           if (this.change_pos) {
             this.map.setCenter(new google.maps.LatLng(item[0], item[1], true))
           }
@@ -94,6 +98,8 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
     this.trek_marker.setMap(this.map);
     this.marker.setMap(this.map);
     this.transitLayer.setMap(this.map);
+
+
   }
 
   marker_info(): void{
@@ -107,6 +113,13 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
     localStorage.clear()
     this.trek = []
     this.trek = [[51.5, -0.11]]
+  }
+
+  map_rightclick(): void{
+    this.map.addListener('rightclick', () => {
+      this.menu!.nativeElement.style.display = ''
+    }
+    )
   }
 
   save(): void {
@@ -127,6 +140,7 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
         this.info = res;
         this.marker_info()
       }
+
     )
   }
 
@@ -142,10 +156,9 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
     });
     this.map.addListener("center_changed", () => {
     this.trek_marker.setPosition(this.map.getCenter() as google.maps.LatLng)
-    this.checkoutForm.controls['userLAT'].patchValue(Number(this.map.getCenter()?.lat()))
-    this.checkoutForm.controls['userLNG'].patchValue(Number(this.map.getCenter()?.lng()))
+    this.checkoutForm.controls['userLAT'].setValue(Number(this.map.getCenter()?.lat()), {emitEvent: false})
+    this.checkoutForm.controls['userLNG'].setValue(Number(this.map.getCenter()?.lng()), {emitEvent: false})
     });
-
   }
 
   ngOnInit(): void {
@@ -172,7 +185,8 @@ export class MainComponent implements AfterViewInit, OnInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.mapInit();
-    this.map_drag()
+    this.map_drag();
+    this.map_rightclick()
   }
 
   ngOnDestroy(): void {

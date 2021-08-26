@@ -1,0 +1,77 @@
+*{
+  margin: 0px;
+}
+
+.des{
+  height: calc(100% - (525px + 1%));
+  width: 100%;
+}
+
+.possibilities{
+  margin-top: 1%;
+  width: 60%;
+  height: 100%;
+  background-color: rgb(223, 223, 223);
+  float: left;
+}
+
+.whats_new{
+  margin-top: 1%;
+  margin-left: 1%;
+  width: 39%;
+  height: 100%;;
+  background-color: rgb(223, 223, 223);
+  float: right;
+}
+
+.whats_new>h2, .possibilities>h2{
+  text-align: center;
+}
+
+// #carousel>#matCarouselSlide>.description{
+//   background-color: rgba(0, 0, 0, 0.6);
+//   z-index: 10;
+//   color: #f1f1f1;
+//   height: 450px;
+//   position: absolute;
+// }
+
+// #carousel>#matCarouselSlide>.image>img{
+//   position: relative;
+// }
+
+.description{
+  position: absolute;
+}
+
+.image>img{
+  position: relative;
+}
+
+#without-ntroducing {
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 120px 85px 136px 85px;
+}
+
+#amultiple {
+    padding: 60px;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.68);
+}
+
+#amultiple h2 {
+
+    text-align: center;
+    color: #f9f8f8;
+    font-weight: normal;
+    text-shadow: 0 1px 0 #3e3737;
+}
+
+#amultiple h2 {
+    margin-bottom: 48px;
+    font-size: 28px;
+}
+#amultiple h5 { margin-top: 70px; font-size: 17px;
+}

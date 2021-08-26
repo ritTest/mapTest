@@ -13,13 +13,26 @@
       <mat-label>Долгота</mat-label>
       <input matInput id="name" type="number" formControlName="userLNG">
     </mat-form-field>
+
+
+    <button mat-raised-button color="primary" class="button" type="submit" id="reproduce" (click)="save()">
+      <mat-icon class="mat-icon-rtl-mirror"  aria-hidden="false">done</mat-icon>
+      сохранить</button>
+
     <mat-checkbox class="check" color="primary" id='checkbox' (change)="change()">Следить</mat-checkbox>
 
-    <button mat-raised-button color="primary" class="button" type="submit" id="reproduce" (click)="save()">сохранить</button>
-    <button mat-raised-button color="primary" class="button" type="submit" id="reproduce" (click)="reproduce()">воспроизвести</button>
-    <button mat-raised-button color="primary" class="button" type="submit" id="del" (click)="del()">очистить хранилище</button>
-    <button mat-raised-button color="primary" class="button" type="submit" id="get_coords" (click)="process_coord()">получить координаты</button>
 
+    <div class="buttons">
+    <button mat-raised-button color="primary" class="button" type="submit" id="reproduce" (click)="reproduce()">
+      <mat-icon class="mat-icon-rtl-mirror"  aria-hidden="false">history</mat-icon>
+      воспроизвести</button>
+    <button mat-raised-button color="primary" class="button" type="submit" id="del" (click)="del()">
+      <mat-icon class="mat-icon-rtl-mirror"  aria-hidden="false">delete_outline</mat-icon>
+      очистить хранилище</button>
+    <button mat-raised-button color="primary" class="button" type="submit" id="get_coords" (click)="process_coord()">
+      <mat-icon class="mat-icon-rtl-mirror"  aria-hidden="false">star_rate</mat-icon>
+      получить координаты</button>
+    </div>
     <table #tableMy style="display: none;">
       <ng-container *ngIf="info">
         <tr>
@@ -33,6 +46,32 @@
       </ng-container>
     </table>
 
+    <div class="menu"  style="display: none;" #menu>
+    <!-- #docregion sub-menu -->
+      <button mat-menu-item [matMenuTriggerFor]="markers">Добавить маркер</button>
+      <button mat-menu-item>Приблизить</button>
+      <button mat-menu-item>Отдалить</button>
+
+    <mat-menu #markers="matMenu">
+      <button mat-menu-item [matMenuTriggerFor]="pins">Кнопки</button>
+      <button mat-menu-item [matMenuTriggerFor]="cross">крестики</button>
+      <button mat-menu-item>человек</button>
+      <button mat-menu-item>дорога</button>
+    </mat-menu>
+    <!-- #enddocregion sub-menu -->
+
+    <mat-menu #pins="matMenu">
+      <button mat-menu-item>красный</button>
+      <button mat-menu-item>черный</button>
+      <button mat-menu-item>зеленый</button>
+    </mat-menu>
+
+    <mat-menu #cross="matMenu">
+      <button mat-menu-item>красный</button>
+      <button mat-menu-item>черный</button>
+      <button mat-menu-item>зеленый</button>
+    </mat-menu>
+  </div>
   </form>
 </div>
 

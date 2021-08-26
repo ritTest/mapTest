@@ -6,13 +6,19 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatMenuModule} from '@angular/material/menu';
+import {IvyCarouselModule} from 'angular-responsive-carousel';
+import {MatListModule} from '@angular/material/list';
 const modules = [
   MatToolbarModule,
   MatIconModule,
   MatButtonModule,
   MatFormFieldModule,
   MatInputModule,
-  MatCheckboxModule
+  MatCheckboxModule,
+  MatMenuModule,
+  IvyCarouselModule,
+  MatListModule
 ];
 
 @NgModule({

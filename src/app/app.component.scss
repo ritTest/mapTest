@@ -4,9 +4,12 @@ a {
   color: black;
 }
 a:hover{
-  color: rgb(49, 49, 49);
+  color: rgb(112, 112, 112);
+}
+a:active{
+  color:rgb(149, 149, 149)
 }
 
 mat-toolbar{
-  background-color: rgb(230, 230, 230);
+  background-color: rgb(202, 202, 202);
 }

@@ -1,0 +1,65 @@
+
+<div style="height: 450px;" #carousel>
+  <mat-carousel
+    timings="250ms ease-in"
+    [autoplay]="true"
+    [interval]="5000"
+    color="accent"
+    maxWidth="auto"
+    [proportion]="27"
+    [slides]="3"
+    [loop]="true"
+    [hideArrows]="false"
+    [hideIndicators]="false"
+    [useKeyboard]="true"
+    [useMouseWheel]="false"
+    orientation="ltr"
+  >
+  <mat-carousel-slide #matCarouselSlide>
+    <div id="without-ntroducing" style="background-image: url('./assets/card1.png');">
+      <div id="amultiple">
+        <h2>Добавляйте маркеры на карту</h2>
+      </div>
+    </div>
+  </mat-carousel-slide>
+  <mat-carousel-slide #matCarouselSlide>
+    <div id="without-ntroducing" style="background-image: url('./assets/card2.jpg');">
+      <div id="amultiple">
+        <h2>Смотрите изображения со спутников</h2>
+      </div>
+    </div>
+  </mat-carousel-slide>
+  <mat-carousel-slide #matCarouselSlide>
+    <div id="without-ntroducing" style="background-image: url('./assets/card3.jpg');">
+      <div id="amultiple">
+        <h2>Получайте информацию о координатах</h2>
+      </div>
+    </div>
+  </mat-carousel-slide>
+  </mat-carousel>
+</div>
+
+
+
+<div class="des">
+  <div class="possibilities">
+    <h2>Как этим пользоваться</h2>
+    <mat-list role="list" id='list'>
+      <mat-list-item role="listitem">Наведите карту на нужные координаты или впишите их</mat-list-item>
+      <mat-list-item role="listitem">Сохраняйте позицию маркера в хранилище вашего браузера</mat-list-item>
+      <mat-list-item role="listitem">Воспроизводите сохраненные позиции</mat-list-item>
+      <mat-list-item role="listitem">Получайте названия городов или деревень по вашим координатам</mat-list-item>
+    </mat-list>
+  </div>
+
+  <div class="whats_new">
+    <h2>Что нового</h2>
+    <mat-list role="list" id='list'>
+      <mat-list-item role="listitem">Изменена главная страница</mat-list-item>
+      <mat-list-item role="listitem">Исправлено воспроизведение</mat-list-item>
+      <mat-list-item role="listitem">Добавлены иконки кнопок
+      </mat-list-item>
+    </mat-list>
+  </div>
+
+</div>

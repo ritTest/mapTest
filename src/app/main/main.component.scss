@@ -30,11 +30,14 @@ body {
   width: 100%;
 }
 
+.buttons{
+  display:flex;
+}
+
 .button{
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 15px;
+  flex: 0 0 33%;
+  width: 100%;
+  margin: 5px;
 }
 
 .check{
