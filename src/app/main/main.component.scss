@@ -30,15 +30,40 @@ body {
   width: 100%;
 }
 
+// .buttons{
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   flex-direction: column;
+//   width: 80%;
+//   text-align: center;
+//   margin: 10% 0;
+//   align-items: center;
+// }
+
 .buttons{
+  align-items: center;
   display:flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .button{
+  align-items: center;
   flex: 0 0 33%;
-  width: 100%;
+  width: 80%;
   margin: 5px;
 }
+
+// #reproduce, #del, #process_coords{
+//   position: relative;
+//   bottom: 20px;
+// }
+
+// .button{
+//   width: 80%;
+//   margin-top: 5px;
+// }
 
 .check{
   margin: 15px;

@@ -15,21 +15,22 @@
     </mat-form-field>
 
 
-    <button mat-raised-button color="primary" class="button" type="submit" id="reproduce" (click)="save()">
-      <mat-icon class="mat-icon-rtl-mirror"  aria-hidden="false">done</mat-icon>
-      сохранить</button>
-
-    <mat-checkbox class="check" color="primary" id='checkbox' (change)="change()">Следить</mat-checkbox>
-
-
     <div class="buttons">
+      <button mat-raised-button color="primary" class="button" type="submit" id="reproduce" (click)="save()">
+        <mat-icon class="mat-icon-rtl-mirror"  aria-hidden="false">done</mat-icon>
+        сохранить</button>
+
+      <mat-checkbox class="check" color="primary" id='checkbox' (change)="change()">Следить</mat-checkbox>
+
+
+
     <button mat-raised-button color="primary" class="button" type="submit" id="reproduce" (click)="reproduce()">
       <mat-icon class="mat-icon-rtl-mirror"  aria-hidden="false">history</mat-icon>
       воспроизвести</button>
     <button mat-raised-button color="primary" class="button" type="submit" id="del" (click)="del()">
       <mat-icon class="mat-icon-rtl-mirror"  aria-hidden="false">delete_outline</mat-icon>
       очистить хранилище</button>
-    <button mat-raised-button color="primary" class="button" type="submit" id="get_coords" (click)="process_coord()">
+    <button mat-raised-button color="primary" class="button" type="submit" id="process_coords" (click)="process_coord()">
       <mat-icon class="mat-icon-rtl-mirror"  aria-hidden="false">star_rate</mat-icon>
       получить координаты</button>
     </div>
