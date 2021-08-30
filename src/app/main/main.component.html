@@ -13,27 +13,15 @@
       <mat-label>Долгота</mat-label>
       <input matInput id="name" type="number" formControlName="userLNG">
     </mat-form-field>
-
-
-    <div class="buttons">
-      <button mat-raised-button color="primary" class="button" type="submit" id="reproduce" (click)="save()">
-        <mat-icon class="mat-icon-rtl-mirror"  aria-hidden="false">done</mat-icon>
-        сохранить</button>
-
-      <mat-checkbox class="check" color="primary" id='checkbox' (change)="change()">Следить</mat-checkbox>
-
-
-
-    <button mat-raised-button color="primary" class="button" type="submit" id="reproduce" (click)="reproduce()">
-      <mat-icon class="mat-icon-rtl-mirror"  aria-hidden="false">history</mat-icon>
-      воспроизвести</button>
-    <button mat-raised-button color="primary" class="button" type="submit" id="del" (click)="del()">
-      <mat-icon class="mat-icon-rtl-mirror"  aria-hidden="false">delete_outline</mat-icon>
-      очистить хранилище</button>
-    <button mat-raised-button color="primary" class="button" type="submit" id="process_coords" (click)="process_coord()">
-      <mat-icon class="mat-icon-rtl-mirror"  aria-hidden="false">star_rate</mat-icon>
-      получить координаты</button>
+    <div class="control">
+      <div class="buttons">
+        <button mat-raised-button color="primary" class="button" type="submit" id="reproduce" (click)="save()">
+          <mat-icon class="mat-icon-rtl-mirror"  aria-hidden="false">done</mat-icon>
+          <span class="button_label">сохранить</span>
+        </button>
+      </div>
     </div>
+
     <table #tableMy style="display: none;">
       <ng-container *ngIf="info">
         <tr>
@@ -74,5 +62,22 @@
     </mat-menu>
   </div>
   </form>
+
+  <div class="buttons bottom">
+    <button mat-raised-button color="primary" class="button" type="submit" id="reproduce" (click)="reproduce()">
+      <mat-icon class="mat-icon-rtl-mirror"  aria-hidden="false">history</mat-icon>
+      <span class="button_label">воспроизвести</span>
+    </button>
+    <mat-checkbox class="check" color="primary" id='checkbox' (change)="change()">Следить</mat-checkbox>
+
+    <button mat-raised-button color="primary" class="button" type="submit" id="del" (click)="del()">
+      <mat-icon class="mat-icon-rtl-mirror"  aria-hidden="false">delete_outline</mat-icon>
+      <span class="button_label">очистить хранилище</span>
+    </button>
+    <button mat-raised-button color="primary" class="button" type="submit" id="process_coords" (click)="process_coord()">
+      <mat-icon class="mat-icon-rtl-mirror"  aria-hidden="false">star_rate</mat-icon>
+      <span class="button_label">получить координаты</span>
+    </button>
+  </div>
 </div>
 
